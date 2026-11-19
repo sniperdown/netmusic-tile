@@ -1,0 +1,92 @@
+<Window x:Class="NetMusicTile.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NetMusicTile"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ShowActivated="False"
+        WindowStartupLocation="Manual">
+    <!--
+        Sized and positioned in PHYSICAL pixels by SetWindowPos (see ApplyRect):
+        WPF's own Left/Top/Width/Height are multiplied by the monitor scale factor.
+
+        Layout is proportional, so changing w/h in config.json reflows everything.
+
+        The artwork is the panel's BACKDROP, not a thumbnail in a strip: it fills
+        the whole area (UniformToFill, so it may crop) and the text sits on top of
+        a gradient wash. Rounded corners come from RadiusX/RadiusY on the
+        rectangles, because a Border's CornerRadius does not clip its children, so
+        the artwork would otherwise show square corners inside the rounded panel.
+    -->
+    <Border x:Name="OuterBorder" Background="#E6101010" BorderBrush="#40FFFFFF"
+            BorderThickness="1" CornerRadius="6">
+        <Grid>
+
+            <!-- ============ backdrop ============ -->
+
+            <!-- fallback colour, shown when the session has no artwork -->
+            <Rectangle x:Name="CoverBackdrop" RadiusX="5" RadiusY="5"/>
+
+            <!-- the real cover. RenderOptions is an attached property, so it has
+                 to be an attribute on the Rectangle, not a child element. -->
+            <Rectangle x:Name="CoverImageLayer" RadiusX="5" RadiusY="5"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Visibility="Collapsed"/>
+
+            <!-- fallback glyph, centred over the whole panel -->
+            <TextBlock x:Name="CoverLetter"
+                       FontSize="64" FontWeight="SemiBold" Foreground="#F2FFFFFF"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <!-- Legibility wash. Text on top of a photo is unreadable without one,
+                 so this is transparent over the upper half (the artwork reads
+                 there) and gets progressively darker towards the controls. -->
+            <Rectangle RadiusX="5" RadiusY="5" IsHitTestVisible="False">
+                <Rectangle.Fill>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#00000000" Offset="0.00"/>
+                        <GradientStop Color="#1F000000" Offset="0.34"/>
+                        <GradientStop Color="#94000000" Offset="0.60"/>
+                        <GradientStop Color="#E6000000" Offset="1.00"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <!-- ============ foreground ============ -->
+            <Grid Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- song / artist, sitting just above the controls -->
+                <StackPanel Grid.Row="1">
+                    <TextBlock x:Name="TxtSong" Text="未在播放" Foreground="#FFFFFFFF"
+                               FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock x:Name="TxtArtist" Text="" Foreground="#CCFFFFFF"
+                               FontSize="13" TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+
+                <!-- transport -->
+                <UniformGrid Grid.Row="2" Rows="1" Columns="3" Margin="0,10,0,0">
+                    <Button x:Name="BtnPrev" Content="◀◀" FontSize="15" Height="34" Margin="0,0,3,0"
+                            Click="OnPrev" Foreground="#FFFFFFFF" Background="#3DFFFFFF" BorderBrush="#59FFFFFF"/>
+                    <Button x:Name="BtnPlay" Content="▶" FontSize="15" Height="34" Margin="3,0,3,0"
+                            Click="OnPlay" Foreground="#FFFFFFFF" Background="#59FFFFFF" BorderBrush="#59FFFFFF"/>
+                    <Button x:Name="BtnNext" Content="▶▶" FontSize="15" Height="34" Margin="3,0,0,0"
+                            Click="OnNext" Foreground="#FFFFFFFF" Background="#3DFFFFFF" BorderBrush="#59FFFFFF"/>
+                </UniformGrid>
+
+                <!-- one dim line so a stuck state is diagnosable at a glance -->
+                <TextBlock Grid.Row="3" x:Name="TxtStatus" Text="" Foreground="#80FFFFFF"
+                           FontSize="10" Margin="0,7,0,0" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

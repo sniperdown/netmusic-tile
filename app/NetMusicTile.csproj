@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- The Windows version in the TFM is what brings in the WinRT projection.
+         Without it Windows.Media.Control is not available in .NET 6. -->
+    <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>netmusic-tile</AssemblyName>
+    <RootNamespace>NetMusicTile</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- A real icon matters for the tray: Windows 11 treats an icon-less process
+         differently (it would not even be listed in the shell's NotifyIconSettings),
+         and a generic stock icon is easy to miss among the others. -->
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <!-- App.xaml is the application definition: it generates the WPF Main(). It is
+         declared explicitly because the default globbing would also try to compile
+         it as a page. -->
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <!-- loaded at runtime for the tray icon; kept next to the exe on purpose so
+         the tray image can be changed without recompiling -->
+    <None Update="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

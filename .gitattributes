@@ -1,0 +1,12 @@
+# Normalise line endings: keep text files as LF in the repo, but check out the
+# Windows-only scripts and the project files with CRLF, which is what cmd.exe and
+# Visual Studio expect.
+* text=auto
+
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.csproj text eol=crlf
+*.manifest text eol=crlf
+
+*.ico binary
+*.png binary

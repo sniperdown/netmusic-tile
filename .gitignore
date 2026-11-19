@@ -1,0 +1,23 @@
+# ---- build output ----
+bin/
+obj/
+*.pdb
+
+# ---- byproduct of redirecting APPDATA/NUGET_PACKAGES into the checkout ----
+NuGet/
+
+# ---- local NuGet cache used for offline builds ----
+.nuget/
+.tmp/
+
+# ---- staged build that install.cmd copies from ----
+release/
+
+# ---- runtime artifacts ----
+*.log
+signal.txt
+
+# ---- local working material that must never be published ----
+# (album artwork and design material are third-party copyrighted works)
+底图素材/
+docs/local/

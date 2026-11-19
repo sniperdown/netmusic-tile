@@ -1,0 +1,24 @@
+{
+  "_readme": "netmusic-tile 配置。改完不用重启：程序每秒检查本文件时间戳，变了就自动重读（尺寸/位置会立刻应用）。",
+  "_units": "坐标与尺寸的单位是【物理像素】，不是 WPF 的逻辑像素。例：4K@150% 缩放下 303 物理像素 ≈ 202 逻辑像素。用 position.cmd 拖动设置，别手算。",
+
+  "x": 1995,
+  "y": 1465,
+  "w": 303,
+  "h": 303,
+
+  "_polling": "pollMenuMs 越小菜单响应越跟手；pollSongMs 是读歌名/封面的间隔。",
+  "pollMenuMs": 120,
+  "pollSongMs": 1000,
+
+  "_debounce": "关菜单必须 0（用户要求零延迟）；开菜单留一点防抖，避免菜单动画期间闪一下。",
+  "menuCloseDebounceMs": 0,
+  "menuOpenDebounceMs": 120,
+
+  "_menu": "开始菜单窗口的类名与标题。判据是 IsWindowVisible && !被DWM遮蔽 && 在显示器内 —— 不是比较坐标。",
+  "menuWindowClass": "DV2ControlHost",
+  "menuWindowTitle": "Start menu",
+
+  "_player": "SMTC 会话的 appId 子串。网易云注册为 cloudmusic.exe。",
+  "playerAppId": "cloudmusic"
+}
